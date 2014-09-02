@@ -50,7 +50,7 @@ public class FizzBuzzTest {
 	@Test
 	public void testFizzMinusValue(){
 		try {
-			assertFalse(fizzBuzz.isFizz(0));
+			assertTrue(fizzBuzz.isFizz(0));
 			assertFalse(fizzBuzz.isFizz(-1));
 			fail();
 		} catch (ArithmeticException expected) {
@@ -61,7 +61,7 @@ public class FizzBuzzTest {
 	@Test
 	public void testBuzzMinusValue(){
 		try {
-			assertFalse(fizzBuzz.isBuzz(0));
+			assertTrue(fizzBuzz.isBuzz(0));
 			assertFalse(fizzBuzz.isBuzz(-1));
 			fail();
 		} catch (ArithmeticException expected) {
