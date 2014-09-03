@@ -1,6 +1,9 @@
 package WordFilter;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +31,10 @@ public class WordFilterTest {
 	@Test
 	public void testDetectSimpleWord(){
 		wordFilter.registNGWord("aaa");
+		
+		assertThat(true, is( wordFilter.detect("aaa bbb")));
+		assertThat(false, is( wordFilter.detect("aabbbaa")));
+		
 		assertTrue(wordFilter.detect("aaa bbb"));
 		assertFalse(wordFilter.detect("aabbbaa"));
 	}
@@ -35,6 +42,10 @@ public class WordFilterTest {
 	@Test
 	public void testDetectWordInSentence(){
 		wordFilter.registNGWord("晩御飯");
+		
+		assertThat(true, is( wordFilter.detect("今日の晩御飯はハンバーグ")));
+		assertThat(false, is( wordFilter.detect("今日の昼ごはんはハンバーグ")));
+		
 		assertTrue(wordFilter.detect("今日の晩御飯はハンバーグ"));
 		assertFalse(wordFilter.detect("今日の昼ごはんはハンバーグ"));
 	}
@@ -42,34 +53,35 @@ public class WordFilterTest {
 	@Test
 	public void testCensor(){
 		wordFilter.registNGWord("ハンバーグ");
-		assertEquals("今日の晩御飯は" + replacedWord, wordFilter.censor("今日の晩御飯はハンバーグ"));
-		assertNotEquals("今日の晩御飯は" + replacedWord, wordFilter.censor("今日の晩御飯はパンバーグ"));
+		assertThat("今日の晩御飯は" + replacedWord, is( equalTo( wordFilter.censor("今日の晩御飯はハンバーグ"))));
+		assertThat("今日の晩御飯は" + replacedWord, is ( not ( equalTo( wordFilter.censor("今日の晩御飯はパンバーグ")))));		
 	}
 	
 	@Test
 	public void testRegistMultiNGWordAndCensor(){
-		assertEquals(2, wordFilter.registNGWord("晩御飯,ハンバーグ"));
-		assertEquals("今日の" + replacedWord + "は" + replacedWord, wordFilter.censor("今日の晩御飯はハンバーグ"));
+		assertThat(2, is( wordFilter.registNGWord("晩御飯,ハンバーグ")));
+		assertThat("今日の" + replacedWord + "は" + replacedWord, is( equalTo(wordFilter.censor("今日の晩御飯はハンバーグ"))));
 	}
 
 	@Test
 	public void testRegistSingleNGWord(){
-		assertEquals(1, wordFilter.registNGWord("晩御飯"));
+		assertThat(1, is( wordFilter.registNGWord("晩御飯")));
 	}
 	
 	@Test
 	public void testCleanAndReRegistNGWord(){
 		wordFilter.registNGWord("晩御飯,ハンバーグ");
-		assertEquals(0, wordFilter.clearNGword());
 
-		String[] wordList ={"お昼", "から揚げ定食"}; 
+		assertThat(0, is( wordFilter.clearNGword()));
+
+		String[] wordList ={"お昼", "から揚げ定食"};		
 		wordFilter.registNGWord("お昼,から揚げ定食");
-		assertArrayEquals(wordList, wordFilter.getWordList().toArray());
+		assertThat(wordList, is( arrayContaining(wordFilter.getWordList().toArray())));
 	}
 	
 	@Test
 	public void testSetReplacedWord(){
 		wordFilter.setReplacedWord(replacedWord);
-		assertEquals(replacedWord, wordFilter.getReplacedWord());
+		assertThat(replacedWord, is( equalTo(wordFilter.getReplacedWord())));
 	}
 }
