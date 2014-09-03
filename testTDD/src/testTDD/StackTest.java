@@ -1,43 +1,50 @@
 package testTDD;
 
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+
+import static org.junit.Assert.fail;
+
 import java.util.EmptyStackException;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import junit.framework.TestCase;
 
 /**
  * @author miyamoto
  * This practice is http://objectclub.jp/technicaldoc/testing/stack_tdd.pdf
  *
  */
-public class StackTest extends TestCase{
+public class StackTest {
 
 	Stack stack;
+
+	@Before
 	public void setUp(){
 		stack = new Stack();
 	}
 	
 	@Test
-	public void testCreate(){
-		assertTrue(stack.isEmpty());
+	public void testCreate(){		
+		assertThat(true, is( stack.isEmpty()));
 	}
 	
 	@Test
 	public void testPushAndTop(){
 		Stack stack = new Stack();
 		stack.push(1);
-		assertFalse(stack.isEmpty());
-		assertEquals(1, stack.top());
+
+		assertThat(false, is( stack.isEmpty()));
+		assertThat(1, is( stack.top()));
 	}
 	
 	@Test
 	public void testPushAndSize(){
 		stack.push(1);
-		assertEquals(1, stack.size());
+		assertThat(1, is( stack.size()));
 		
-		stack.push(2);
-		assertEquals(2, stack.size());
+		stack.push(2);		
+		assertThat(2, is( stack.size()));
 	}
 	
 	@Test
@@ -66,15 +73,17 @@ public class StackTest extends TestCase{
 	public void testPushAndPop(){
 		stack.push(1);
 		stack.pop();
-		assertEquals(0, stack.size());
+		assertThat(0, is(stack.size()));
 	}
 	
 	@Test
 	public void testPushPushPopTop(){
 		stack.push(1);
 		stack.push(2);
-		assertEquals(2,stack.size());
+
+		assertThat(2, is( stack.size()));
 		stack.pop();
-		assertEquals(1,stack.top());
+
+		assertThat(1, is( stack.top()));
 	}
 }
