@@ -1,9 +1,9 @@
-/**
- * 
- */
 package FizzBuzz;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,28 +30,31 @@ public class FizzBuzzTest {
 	
 	@Test
 	public void testFizz(){
-		assertTrue(fizzBuzz.isFizz(3));
-		assertFalse(fizzBuzz.isFizz(4));
+		assertThat(true, is( fizzBuzz.isFizz(3) ));
+		assertThat(true, is( not( fizzBuzz.isFizz(4))));
 	}
-	
+
 	@Test
 	public void testBuzz(){
-		assertTrue(fizzBuzz.isBuzz(5));
-		assertFalse(fizzBuzz.isBuzz(6));
+		assertThat(true, is( fizzBuzz.isBuzz(5)));
+		
+		// same as assertThat(true, is( not( fizzBuzz.isBuzz(6))));
+		assertThat(false, is( fizzBuzz.isBuzz(6)));
 	}
 	
 	@Test
 	public void testFizzBuzz(){
-		assertFalse(fizzBuzz.isFizzBuzz(9));
-		assertTrue(fizzBuzz.isFizzBuzz(15));
-		assertFalse(fizzBuzz.isFizzBuzz(16));
+		
+		assertThat(false, is( fizzBuzz.isFizzBuzz(9)));
+		assertThat(true, is( fizzBuzz.isFizzBuzz(15)));
+		assertThat(false, is( fizzBuzz.isFizzBuzz(16)));
 	}
 	
 	@Test
 	public void testFizzMinusValue(){
 		try {
-			assertTrue(fizzBuzz.isFizz(0));
-			assertFalse(fizzBuzz.isFizz(-1));
+			assertThat(true, is( fizzBuzz.isFizz(0)));
+			assertThat(false, is(fizzBuzz.isFizz(-1)));
 			fail();
 		} catch (ArithmeticException expected) {
 			// TODO: handle exception
@@ -61,8 +64,8 @@ public class FizzBuzzTest {
 	@Test
 	public void testBuzzMinusValue(){
 		try {
-			assertTrue(fizzBuzz.isBuzz(0));
-			assertFalse(fizzBuzz.isBuzz(-1));
+			assertThat(true, is( fizzBuzz.isBuzz(0)));
+			assertThat(false, is( fizzBuzz.isBuzz(-1)));			
 			fail();
 		} catch (ArithmeticException expected) {
 			// TODO: handle exception
